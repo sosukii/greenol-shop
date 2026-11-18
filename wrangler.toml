@@ -1,0 +1,19 @@
+# Cloudflare Workers: API магазина. Секреты (не хранить здесь!):
+#   npx wrangler secret put SESSION_SECRET
+#   npx wrangler secret put ADMIN_PASSWORD_HASH
+#   npx wrangler secret put PAYMENT_WEBHOOK_SECRET
+name = "greenol-api"
+main = "server/worker.ts"
+compatibility_date = "2026-06-01"
+
+[vars]
+ADMIN_USER = "admin"
+ALLOWED_ORIGINS = "https://sosukii.github.io"
+CROSS_SITE_COOKIES = "true"
+PAYMENT_MODE = "sandbox"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "greenol"
+database_id = "REPLACE_AFTER_d1_create"
+migrations_dir = "migrations"

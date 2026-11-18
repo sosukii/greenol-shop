@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS orders (
+  id TEXT PRIMARY KEY,
+  idem_key TEXT NOT NULL UNIQUE,
+  number TEXT NOT NULL UNIQUE,
+  created_at TEXT NOT NULL,
+  data TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS leads (
+  id TEXT PRIMARY KEY,
+  created_at TEXT NOT NULL,
+  data TEXT NOT NULL
+);
