@@ -17,3 +17,18 @@
 - Резервные копии: снимки диска Render (Disks → Snapshots) или `sqlite3 /data/shop.db ".backup ..."` по расписанию.
 - SQLite — один сервер; для масштабирования — PostgreSQL (интерфейс `Store` в `src/core/orders.ts`).
 - Rate limit хранится в памяти процесса.
+
+## Cloudflare Workers + D1 (текущий деплой)
+
+API: `https://greenol-api.greenol-shop.workers.dev`, база D1 `greenol` (регион EEUR).
+
+```bash
+npx wrangler login                          # один раз
+npx wrangler d1 migrations apply greenol --remote
+npx wrangler secret put SESSION_SECRET      # + PAYMENT_WEBHOOK_SECRET, ADMIN_PASSWORD_HASH
+npx wrangler deploy
+```
+
+Витрина собирается с `VITE_API_URL` из переменной репозитория `API_URL`.
+Важно: данные покупателей лежат на зарубежной инфраструктуре — для боевого запуска по 152-ФЗ
+перенести базу на российский хостинг (хранилище отделено интерфейсом `Store`).
