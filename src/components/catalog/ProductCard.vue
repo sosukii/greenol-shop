@@ -62,7 +62,7 @@ const classes = {
         <span v-if="hasRange(product)" :class="classes.from">от</span>{{ formatPrice(minPrice(product)) }}
       </p>
       <p v-else :class="classes.request">Цена по запросу</p>
-      <UiButton v-if="single" block :variant="added ? 'secondary' : 'primary'" :aria-label="`В корзину: ${product.title}`" @click="add">
+      <UiButton v-if="single" block size="sm" :variant="added ? 'secondary' : 'primary'" :aria-label="`В корзину: ${product.title}`" @click="add">
         <UiIcon :name="added ? 'check' : 'cart'" :size="18" />{{ added ? 'Добавлено' : 'В корзину' }}
       </UiButton>
       <UiButton v-else :to="href" variant="secondary" block>{{ isPurchasable(product) ? 'Выбрать' : 'Подробнее' }}</UiButton>

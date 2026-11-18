@@ -26,7 +26,7 @@ const sizes = { sm: 'min-h-10 px-3 text-sm', md: 'min-h-11 px-5 text-base', lg: 
 
 const classes = {
   root: computed(() => [
-    'inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-[background-color,transform] duration-150 active:scale-[0.98]',
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap [&>svg]:shrink-0 rounded-xl font-semibold transition-[background-color,transform] duration-150 active:scale-[0.98]',
     'disabled:cursor-not-allowed disabled:active:scale-100',
     variants[props.variant],
     sizes[props.size],

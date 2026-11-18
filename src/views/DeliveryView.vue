@@ -5,7 +5,7 @@ import { estimateDelivery } from '@/core/delivery'
 import { formatPrice } from '@/utils/format'
 import { breadcrumbLd, useSeo } from '@/composables/useSeo'
 import PageShell from '@/components/layout/PageShell.vue'
-import { UiAlert, UiButton, UiInput, UiSelect } from '@/components/ui'
+import { UiAlert, UiButton, UiCityInput, UiInput, UiSelect } from '@/components/ui'
 
 useSeo({
   title: `Доставка и оплата — ${site.name}`,
@@ -33,7 +33,7 @@ const classes = { card: 'rounded-2xl border border-slate-200 bg-white p-5', h2: 
     <section :class="classes.card" aria-labelledby="d-calc">
       <h2 id="d-calc" :class="classes.h2">Калькулятор доставки</h2>
       <form :class="classes.grid" @submit.prevent>
-        <UiInput v-model="calc.city" label="Город" autocomplete="address-level2" />
+        <UiCityInput v-model="calc.city" label="Город" placeholder="Например, Казань" />
         <UiSelect v-model="calc.provider" label="Служба доставки" :options="deliveryProviders.map((p) => ({ value: p.id, label: p.title }))" />
         <UiInput v-model="calc.units" label="Количество товаров" inputmode="numeric" />
       </form>

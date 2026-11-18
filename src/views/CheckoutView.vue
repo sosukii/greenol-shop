@@ -10,7 +10,7 @@ import { useCartStore } from '@/stores/cart'
 import { formatPrice, plural } from '@/utils/format'
 import { useSeo } from '@/composables/useSeo'
 import { track } from '@/composables/analytics'
-import { UiAlert, UiBreadcrumbs, UiButton, UiCheckbox, UiEmptyState, UiInput, UiSkeleton, UiTextarea } from '@/components/ui'
+import { UiAlert, UiBreadcrumbs, UiButton, UiCheckbox, UiCityInput, UiEmptyState, UiInput, UiSkeleton, UiTextarea } from '@/components/ui'
 
 useSeo({ title: 'Оформление заказа — Greenol', description: 'Оформление заказа в интернет-магазине Greenol.', path: '/checkout', noindex: true })
 
@@ -123,7 +123,7 @@ const classes = {
       <section :class="classes.card" aria-labelledby="c-delivery">
         <h2 id="c-delivery" :class="classes.h2">Доставка</h2>
         <div :class="classes.grid2">
-          <UiInput v-model="form.city" label="Город" autocomplete="address-level2" :error="errors.city" @focusout="check('city')" />
+          <UiCityInput v-model="form.city" label="Город" placeholder="Например, Казань" :error="errors.city" @focusout="check('city')" />
           <UiInput v-model="form.address" label="Адрес или пункт выдачи" autocomplete="street-address" :error="errors.address" @focusout="check('address')" />
         </div>
         <fieldset class="flex flex-col gap-2">
