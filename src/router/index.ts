@@ -8,6 +8,7 @@ export const router = createRouter({
     { path: '/', name: 'home', component: () => import('@/views/HomeView.vue') },
     { path: '/catalog/:slug?', name: 'catalog', component: () => import('@/views/CatalogView.vue') },
     { path: '/product/:slug', name: 'product', component: () => import('@/views/ProductView.vue') },
+    { path: '/cart', name: 'cart', component: () => import('@/views/CartView.vue') },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/views/NotFoundView.vue') },
   ],
 })
