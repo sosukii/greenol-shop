@@ -19,8 +19,8 @@ const classes = {
   btn: 'inline-flex h-11 items-center gap-2 rounded-xl bg-brand-600 px-4 font-semibold text-white transition-colors hover:bg-brand-700',
   panel: 'absolute left-0 top-full z-40 mt-2 grid w-[min(44rem,90vw)] grid-cols-2 gap-x-6 gap-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-xl',
   group: 'flex flex-col gap-1',
-  head: 'font-semibold text-slate-900 hover:text-brand-600',
-  sub: 'text-sm text-slate-600 hover:text-brand-600',
+  head: 'py-1 font-semibold text-slate-900 hover:text-brand-600',
+  sub: 'py-1 text-sm text-slate-600 hover:text-brand-600',
   all: 'col-span-2 border-t border-slate-100 pt-3 text-sm font-medium text-brand-600',
 }
 </script>

@@ -82,7 +82,7 @@ const classes = {
           <h2 id="od-customer" :class="classes.h2">Покупатель</h2>
           <dl :class="classes.dl">
             <dt :class="classes.dt">Имя</dt><dd>{{ order.customer.name }}</dd>
-            <dt :class="classes.dt">Телефон</dt><dd><a :href="`tel:${order.customer.phone}`" class="text-brand-600">{{ order.customer.phone }}</a></dd>
+            <dt :class="classes.dt">Телефон</dt><dd><a :href="`tel:${order.customer.phone}`" class="inline-flex min-h-7 items-center text-brand-600">{{ order.customer.phone }}</a></dd>
             <dt v-if="order.customer.email" :class="classes.dt">Email</dt><dd v-if="order.customer.email">{{ order.customer.email }}</dd>
             <dt v-if="order.customer.comment" :class="classes.dt">Комментарий</dt><dd v-if="order.customer.comment">{{ order.customer.comment }}</dd>
           </dl>

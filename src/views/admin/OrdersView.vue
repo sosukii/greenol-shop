@@ -57,7 +57,7 @@ const classes = {
   table: 'w-full min-w-[56rem] text-left text-sm',
   th: 'border-b border-slate-200 bg-slate-50 px-4 py-3 font-medium text-slate-600',
   td: 'border-b border-slate-100 px-4 py-3 align-top',
-  link: 'font-semibold text-brand-600 hover:underline',
+  link: 'inline-flex min-h-8 items-center font-semibold text-brand-600 hover:underline',
   cards: 'flex flex-col gap-3 md:hidden',
   card: 'rounded-2xl border border-slate-200 bg-white p-4',
 }

@@ -24,7 +24,7 @@ const classes = { card: 'rounded-2xl border border-slate-200 bg-white p-5', h2: 
         <dt :class="classes.dt">ОГРНИП</dt><dd>{{ site.legal.ogrnip }}</dd>
         <dt :class="classes.dt">ИНН</dt><dd>{{ site.legal.inn }}</dd>
         <dt :class="classes.dt">Адрес</dt><dd>{{ site.contacts.address }}</dd>
-        <dt :class="classes.dt">E-mail</dt><dd><a :href="`mailto:${site.contacts.email}`" class="text-brand-600 hover:underline">{{ site.contacts.email }}</a></dd>
+        <dt :class="classes.dt">E-mail</dt><dd><a :href="`mailto:${site.contacts.email}`" class="inline-flex min-h-7 items-center text-brand-600 hover:underline">{{ site.contacts.email }}</a></dd>
       </dl>
     </section>
     <div class="flex flex-wrap gap-2"><UiButton to="/catalog">Перейти в каталог</UiButton><UiButton to="/contacts" variant="secondary">Контакты</UiButton></div>

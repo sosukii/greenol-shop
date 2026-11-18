@@ -41,7 +41,7 @@ async function overflow(page: Page) {
     for (const el of document.querySelectorAll('a[href], button, input, select, textarea')) {
       const r = el.getBoundingClientRect()
       if (!r.width || !r.height || el.closest('.sr-only') || (el as HTMLInputElement).type === 'hidden') continue
-      if (el.closest('p, li, address, dd, section > p') && el.tagName === 'A' && r.height < 32) continue // ссылки внутри текста
+      if (el.tagName === 'A' && el.parentElement && (el.parentElement.textContent ?? '').trim().length > (el.textContent ?? '').trim().length + 3 && r.height < 32) continue // ссылки внутри предложения (WCAG: inline-исключение)
       if (Math.min(r.width, r.height) < 24 && !(el as HTMLInputElement).type?.match(/checkbox|radio/)) tiny.push(`${el.tagName}:"${(el.textContent ?? '').trim().slice(0, 20)}" ${Math.round(r.width)}x${Math.round(r.height)}`)
     }
     if (tiny.length > 0) issues.push('мелкие зоны клика: ' + tiny.slice(0, 3).join('; '))

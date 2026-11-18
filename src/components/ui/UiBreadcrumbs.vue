@@ -5,7 +5,7 @@ defineProps<{ items: { label: string; to?: string }[] }>()
 
 const classes = {
   root: 'mb-4 flex flex-wrap items-center gap-1.5 text-sm text-slate-500',
-  link: 'hover:text-brand-600',
+  link: 'inline-flex min-h-6 items-center hover:text-brand-600',
   current: 'text-slate-900',
   sep: 'text-slate-300',
 }

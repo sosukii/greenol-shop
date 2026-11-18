@@ -97,9 +97,9 @@ const classes = {
   block: 'flex flex-col gap-1.5',
   blockTitle: 'mb-1 text-sm font-semibold text-slate-900',
   catLink: 'rounded-lg px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-brand-600',
-  toolbar: 'mb-4 flex items-end justify-between gap-3',
+  toolbar: 'mb-4 flex flex-wrap items-end justify-between gap-3',
   mobileBtn: 'lg:hidden',
-  sort: 'w-44 sm:w-52',
+  sort: 'w-36 sm:w-52',
   priceRow: 'grid grid-cols-2 gap-2',
 }
 </script>

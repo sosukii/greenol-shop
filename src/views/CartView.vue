@@ -58,7 +58,7 @@ const classes = {
           <span :class="classes.sum">{{ formatPrice(item.price * item.qty) }}</span>
           <button type="button" :class="classes.remove" :aria-label="`Удалить: ${item.title}`" @click="remove(item.sku)"><UiIcon name="trash" /></button>
         </div>
-        <button type="button" class="col-span-2 text-left text-sm text-slate-500 hover:text-red-600 sm:hidden" @click="remove(item.sku)">Удалить</button>
+        <button type="button" class="col-span-2 min-h-11 text-left text-sm text-slate-500 hover:text-red-600 sm:hidden" @click="remove(item.sku)">Удалить</button>
       </li>
     </ul>
     <aside :class="classes.summary" aria-label="Итого">

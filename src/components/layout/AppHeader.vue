@@ -13,7 +13,7 @@ const classes = {
   top: 'hidden border-b border-slate-200 bg-white text-sm text-slate-600 md:block',
   topInner: 'mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-1.5',
   topLinks: 'flex items-center gap-5',
-  link: 'hover:text-brand-600',
+  link: 'inline-flex min-h-8 items-center hover:text-brand-600',
   root: 'z-30 border-b border-slate-200 bg-white md:sticky md:top-0',
   inner: 'mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-2.5 px-4 py-3',
   logo: 'inline-flex shrink-0 items-center',
