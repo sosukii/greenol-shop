@@ -15,5 +15,5 @@ PAYMENT_MODE = "sandbox"
 [[d1_databases]]
 binding = "DB"
 database_name = "greenol"
-database_id = "REPLACE_AFTER_d1_create"
+database_id = "5295c89f-e671-4b68-877a-5f893a9dc3c7"
 migrations_dir = "migrations"
