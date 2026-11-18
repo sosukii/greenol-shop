@@ -8,6 +8,7 @@ const props = defineProps<{
   error?: string
   hint?: string
   autocomplete?: string
+  inputmode?: 'text' | 'tel' | 'email' | 'numeric'
 }>()
 const model = defineModel<string>({ default: '' })
 const id = useId()
@@ -16,8 +17,8 @@ const classes = {
   root: 'flex flex-col gap-1.5',
   label: 'text-sm font-medium text-slate-700',
   input: computed(() => [
-    'h-11 rounded-xl border bg-white px-3.5 text-base outline-none transition-colors',
-    'placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-100',
+    'h-11 w-full rounded-xl border bg-white px-3.5 text-base outline-none transition-colors',
+    'placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 disabled:bg-slate-100',
     props.error ? 'border-red-500' : 'border-slate-300',
   ]),
   error: 'text-sm text-red-600',
@@ -34,6 +35,7 @@ const classes = {
       :type="type ?? 'text'"
       :placeholder="placeholder"
       :autocomplete="autocomplete"
+      :inputmode="inputmode"
       :aria-invalid="!!error"
       :aria-describedby="error || hint ? id + '-msg' : undefined"
       :class="classes.input.value"

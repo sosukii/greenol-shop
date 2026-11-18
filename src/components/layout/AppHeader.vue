@@ -1,49 +1,54 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
+import { site } from '@/config/site'
+import { asset } from '@/utils/format'
 import { useCartStore } from '@/stores/cart'
+import { UiIcon } from '@/components/ui'
+import SearchBox from './SearchBox.vue'
+import CategoryMenu from './CategoryMenu.vue'
 
 const cart = useCartStore()
-const router = useRouter()
-const query = ref('')
-
-function search() {
-  const q = query.value.trim()
-  router.push({ path: '/catalog', query: q ? { q } : {} })
-}
 
 const classes = {
-  banner: 'bg-amber-100 px-4 py-1 text-center text-xs text-amber-900',
-  root: 'sticky top-0 z-30 border-b border-slate-200 bg-white',
-  inner: 'mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3',
-  logo: 'text-xl font-extrabold tracking-tight text-brand-600',
-  catalog: 'inline-flex h-11 items-center rounded-xl bg-brand-50 px-4 font-semibold text-brand-600 hover:bg-brand-100',
-  form: 'order-last flex min-w-0 basis-full gap-2 md:order-none md:basis-auto md:flex-1',
-  field: 'h-11 min-w-0 flex-1 rounded-xl border border-slate-300 px-3.5 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100',
-  submit: 'h-11 rounded-xl bg-brand-500 px-5 font-semibold text-white hover:bg-brand-600',
-  nav: 'ml-auto flex items-center gap-1 md:ml-0',
-  link: 'inline-flex h-11 items-center rounded-xl px-3 text-slate-700 hover:bg-slate-100',
-  cartBadge: 'ml-1.5 inline-flex min-w-5 items-center justify-center rounded-full bg-brand-500 px-1.5 text-xs font-bold text-white',
+  top: 'hidden border-b border-slate-200 bg-white text-sm text-slate-600 md:block',
+  topInner: 'mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-1.5',
+  topLinks: 'flex items-center gap-5',
+  link: 'hover:text-brand-600',
+  root: 'z-30 border-b border-slate-200 bg-white md:sticky md:top-0',
+  inner: 'mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-2.5 px-4 py-3',
+  logo: 'inline-flex shrink-0 items-center',
+  logoImg: 'h-8 w-auto sm:h-9',
+  catalog: 'hidden md:block',
+  search: 'order-last basis-full md:order-none md:basis-auto md:flex-1',
+  phoneBtn: 'ml-auto inline-flex size-11 items-center justify-center rounded-xl text-slate-700 hover:bg-slate-100 md:hidden',
+  cart: 'relative hidden h-11 items-center gap-2 rounded-xl px-3 font-medium text-slate-800 hover:bg-slate-100 md:inline-flex',
+  badge: 'absolute -right-0.5 -top-0.5 inline-flex min-w-5 items-center justify-center rounded-full bg-brand-600 px-1 text-xs font-bold leading-5 text-white animate-pop',
 }
 </script>
 
 <template>
-  <div :class="classes.banner">Демо-версия: каталог, цены и расчёт доставки — тестовые данные</div>
+  <div :class="classes.top">
+    <div :class="classes.topInner">
+      <a :href="`tel:${site.contacts.phoneRaw}`" :class="classes.link">{{ site.contacts.phone }} <span class="text-slate-400">· {{ site.contacts.hours[0] }}</span></a>
+      <nav :class="classes.topLinks" aria-label="Информация">
+        <RouterLink to="/about" :class="classes.link">О магазине</RouterLink>
+        <RouterLink to="/delivery" :class="classes.link">Доставка и оплата</RouterLink>
+        <RouterLink to="/contacts" :class="classes.link">Контакты</RouterLink>
+      </nav>
+    </div>
+  </div>
   <header :class="classes.root">
     <div :class="classes.inner">
-      <RouterLink to="/" :class="classes.logo">Магазин Макса</RouterLink>
-      <RouterLink to="/catalog" :class="classes.catalog">Каталог</RouterLink>
-      <form :class="classes.form" role="search" @submit.prevent="search">
-        <input v-model="query" type="search" placeholder="Поиск по каталогу" aria-label="Поиск по каталогу" :class="classes.field" />
-        <button type="submit" :class="classes.submit">Найти</button>
-      </form>
-      <nav :class="classes.nav" aria-label="Основное меню">
-        <RouterLink to="/delivery" :class="[classes.link, 'hidden lg:inline-flex']">Доставка и оплата</RouterLink>
-        <RouterLink to="/cart" :class="classes.link">
-          Корзина
-          <span v-if="cart.count" :class="classes.cartBadge">{{ cart.count }}</span>
-        </RouterLink>
-      </nav>
+      <RouterLink to="/" :class="classes.logo" aria-label="Greenol — на главную">
+        <img :src="asset('img/logo.webp')" width="444" height="88" :class="classes.logoImg" alt="Greenol" fetchpriority="high" />
+      </RouterLink>
+      <div :class="classes.catalog"><CategoryMenu /></div>
+      <div :class="classes.search"><SearchBox /></div>
+      <a :href="`tel:${site.contacts.phoneRaw}`" :class="classes.phoneBtn" aria-label="Позвонить"><UiIcon name="phone" /></a>
+      <RouterLink to="/cart" :class="classes.cart" :aria-label="`Корзина, товаров: ${cart.count}`">
+        <UiIcon name="cart" />Корзина
+        <span v-if="cart.count" :key="cart.bump" :class="classes.badge">{{ cart.count }}</span>
+      </RouterLink>
     </div>
   </header>
 </template>

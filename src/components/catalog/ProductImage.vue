@@ -1,17 +1,40 @@
 <script setup lang="ts">
-// Реальных фото пока нет — нейтральная заглушка вместо выдуманных изображений.
+import { computed } from 'vue'
+import manifest from '@/data/images.json'
+import { asset } from '@/utils/format'
+import { UiIcon } from '@/components/ui'
+
+const props = defineProps<{ id?: string; alt: string; sizes?: string; priority?: boolean; size?: 'card' | 'full' }>()
+const info = computed(() => (props.id ? (manifest as Record<string, { w: number; h: number; widths: number[] }>)[props.id] : undefined))
+const srcset = computed(() => info.value?.widths.map((w) => `${asset(`img/p/${props.id}-${w}.webp`)} ${w}w`).join(', '))
+const src = computed(() => info.value && asset(`img/p/${props.id}-${info.value.widths[Math.min(1, info.value.widths.length - 1)]}.webp`))
+
 const classes = {
-  root: 'flex aspect-square w-full items-center justify-center rounded-xl bg-slate-100 text-slate-400',
-  icon: 'size-12',
-  text: 'sr-only',
+  box: 'relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl bg-white',
+  img: 'size-full object-contain',
+  empty: 'flex size-full flex-col items-center justify-center gap-2 bg-slate-100 text-slate-400',
+  emptyText: 'text-xs',
 }
 </script>
 
 <template>
-  <div :class="classes.root" role="img" aria-label="Фото будет добавлено">
-    <svg :class="classes.icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="1.5" /><path d="m4 18 5-5 4 4 3-3 4 4" />
-    </svg>
-    <span :class="classes.text">Фото будет добавлено</span>
+  <div :class="classes.box">
+    <img
+      v-if="info"
+      :src="src"
+      :srcset="srcset"
+      :sizes="sizes ?? '(min-width:1024px) 280px, (min-width:640px) 33vw, 50vw'"
+      :width="info.w"
+      :height="info.h"
+      :alt="alt"
+      :loading="priority ? 'eager' : 'lazy'"
+      :fetchpriority="priority ? 'high' : 'auto'"
+      decoding="async"
+      :class="classes.img"
+    />
+    <div v-else :class="classes.empty" role="img" :aria-label="`${alt} — фото скоро появится`">
+      <UiIcon name="image" :size="40" />
+      <span :class="classes.emptyText">Фото скоро появится</span>
+    </div>
   </div>
 </template>

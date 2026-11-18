@@ -1,4 +1,6 @@
 import { existsSync } from 'node:fs'
+import imagesJson from '@/data/images.json'
+const images = imagesJson as Record<string, { widths: number[] }>
 import { describe, expect, it } from 'vitest'
 import { categories, descendantIds, isPurchasable, getProduct, minPrice, productCategory, products, queryProducts } from '@/data/catalog'
 import { estimateDelivery } from '@/core/delivery'
@@ -16,7 +18,7 @@ describe('целостность каталога', () => {
     expect(products.filter(isPurchasable).length).toBeGreaterThan(35)
   })
   it('все файлы изображений существуют', () => {
-    for (const p of products) for (const id of p.images) expect(existsSync(`public/img/p/${id}-320.webp`), `${p.slug}:${id}`).toBe(true)
+    for (const p of products) for (const id of p.images) expect(existsSync(`public/img/p/${id}-${images[id].widths[0]}.webp`), `${p.slug}:${id}`).toBe(true)
   })
   it('все категории товаров существуют, нет упоминаний демо', () => {
     const ids = new Set(categories.map((c) => c.id))
