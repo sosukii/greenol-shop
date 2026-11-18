@@ -6,6 +6,7 @@ export const router = createRouter({
   scrollBehavior: () => ({ top: 0 }),
   routes: [
     { path: '/', name: 'home', component: () => import('@/views/HomeView.vue') },
+    { path: '/catalog/:slug?', name: 'catalog', component: () => import('@/views/CatalogView.vue') },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/views/NotFoundView.vue') },
   ],
 })
