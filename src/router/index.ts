@@ -7,6 +7,7 @@ export const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: () => import('@/views/HomeView.vue') },
     { path: '/catalog/:slug?', name: 'catalog', component: () => import('@/views/CatalogView.vue') },
+    { path: '/product/:slug', name: 'product', component: () => import('@/views/ProductView.vue') },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/views/NotFoundView.vue') },
   ],
 })
