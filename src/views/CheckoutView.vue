@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
+import { useOrdersStore } from '@/stores/orders'
 import { deliveryProviders, type DeliveryQuote } from '@/services/delivery'
 import { validateEmail, validatePhone, validateRequired } from '@/utils/validation'
 import { formatPrice } from '@/utils/format'
 import { UiAlert, UiBreadcrumbs, UiButton, UiEmptyState, UiInput, UiSkeleton } from '@/components/ui'
 
 const cart = useCartStore()
+const orders = useOrdersStore()
+const router = useRouter()
+const creating = ref(false)
 
 const form = reactive({ name: '', phone: '', email: '', city: '', address: '', provider: 'cdek', consent: false })
 const errors = reactive<Record<string, string>>({})
@@ -54,7 +59,17 @@ function validate() {
 function submit() {
   submitted.value = true
   if (!validate() || !quote.value) return
-  // Создание заказа и оплата — в следующем коммите
+  if (creating.value) return // защита от двойного создания заказа
+  creating.value = true
+  const provider = deliveryProviders.find((p) => p.id === form.provider)!
+  const order = orders.create({
+    items: cart.items.map((i) => ({ ...i })),
+    subtotal: cart.subtotal,
+    deliveryPrice: quote.value.price,
+    deliveryProvider: provider.title,
+    total: total.value,
+  })
+  router.push(`/order/${order.id}`)
 }
 
 const classes = {
@@ -119,7 +134,7 @@ const classes = {
       </label>
       <p v-if="errors.consent" :class="classes.err" role="alert">{{ errors.consent }}</p>
       <p v-if="submitted && !quote && !quoteLoading" :class="classes.err" role="alert">Сначала рассчитайте доставку: укажите город.</p>
-      <UiButton type="submit" size="lg" block :disabled="quoteLoading">Оплатить</UiButton>
+      <UiButton type="submit" size="lg" block :disabled="quoteLoading" :loading="creating">Оплатить</UiButton>
     </aside>
   </form>
 </template>

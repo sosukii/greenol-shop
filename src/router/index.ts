@@ -10,6 +10,7 @@ export const router = createRouter({
     { path: '/product/:slug', name: 'product', component: () => import('@/views/ProductView.vue') },
     { path: '/cart', name: 'cart', component: () => import('@/views/CartView.vue') },
     { path: '/checkout', name: 'checkout', component: () => import('@/views/CheckoutView.vue') },
+    { path: '/order/:id', name: 'order', component: () => import('@/views/OrderView.vue') },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/views/NotFoundView.vue') },
   ],
 })
