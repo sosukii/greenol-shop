@@ -23,6 +23,9 @@ const classes = {
         <ul :class="classes.list">
           <li><RouterLink to="/catalog" :class="classes.link">Каталог</RouterLink></li>
           <li><RouterLink to="/cart" :class="classes.link">Корзина</RouterLink></li>
+          <li><RouterLink to="/about" :class="classes.link">О магазине</RouterLink></li>
+          <li><RouterLink to="/delivery" :class="classes.link">Доставка и оплата</RouterLink></li>
+          <li><RouterLink to="/contacts" :class="classes.link">Контакты</RouterLink></li>
         </ul>
       </div>
     </div>
