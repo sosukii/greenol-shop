@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { addProduct, adminLogin, fillCheckout, watchErrors, ADMIN_PASSWORD } from './helpers'
+import { addProduct, adminLogin, fillCheckout, pickOption, watchErrors, ADMIN_PASSWORD } from './helpers'
 
 test.skip(!ADMIN_PASSWORD, 'Нужна переменная ADMIN_PASSWORD')
 
@@ -42,9 +42,9 @@ test.describe('админка', () => {
     await page.getByLabel('Поиск').fill('нет такого клиента')
     await expect(page.getByText('Ничего не найдено')).toBeVisible()
     await page.getByLabel('Поиск').fill('')
-    await page.getByLabel('Статус оплаты').selectOption('paid')
+    await pickOption(page, 'Статус оплаты', 'Оплачен')
     await expect(page.getByRole('link', { name: number })).toHaveCount(0)
-    await page.getByLabel('Статус оплаты').selectOption('')
+    await pickOption(page, 'Статус оплаты', 'Все')
 
     // 4. карточка заказа: данные корректны
     await page.getByRole('link', { name: number }).first().click()
@@ -57,7 +57,7 @@ test.describe('админка', () => {
     await expect(page.getByText('По счёту').first()).toBeVisible()
 
     // 5. смена статуса заказа
-    await page.getByLabel('Новый статус').selectOption('confirmed')
+    await pickOption(page, 'Новый статус', 'Подтверждён')
     await page.getByRole('button', { name: 'Сохранить статус' }).click()
     await expect(page.getByText('Статус заказа: new → confirmed')).toBeVisible()
 
@@ -74,8 +74,8 @@ test.describe('админка', () => {
     await page.getByRole('link', { name: 'Лиды' }).click()
     await expect(page.getByText('Лид Тестов')).toBeVisible()
     await expect(page.getByText('Нужна консультация')).toBeVisible()
-    await page.getByLabel('Сменить статус').first().selectOption('in_progress')
-    await expect(page.locator('li span').filter({ hasText: /^В работе$/ })).toBeVisible()
+    await pickOption(page, 'Сменить статус', 'В работе')
+    await expect(page.locator('li span.rounded-md').filter({ hasText: /^В работе$/ })).toBeVisible()
 
     // 8. аналитика
     await page.getByRole('link', { name: 'Аналитика' }).click()

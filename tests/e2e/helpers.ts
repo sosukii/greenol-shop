@@ -23,7 +23,7 @@ export async function adminLogin(page: Page, password = ADMIN_PASSWORD) {
 export async function fillCheckout(page: Page, opts: { payment?: 'card' | 'cash' | 'invoice'; name?: string } = {}) {
   await page.getByLabel('Имя').fill(opts.name ?? 'Анна Тестова')
   await page.getByLabel('Телефон').fill('8 (916) 111-22-33')
-  await page.getByRole('textbox', { name: 'Город' }).fill('Москва')
+  await page.getByRole('combobox', { name: 'Город' }).fill('Москва')
   await page.getByLabel('Адрес или пункт выдачи').fill('ул. Тверская, 1')
   if (opts.payment) await page.getByRole('radio', { name: new RegExp({ card: 'Картой онлайн', cash: 'Наличными', invoice: 'по счёту' }[opts.payment], 'i') }).check()
   await page.getByLabel(/Согласен на обработку/).check()
@@ -33,4 +33,10 @@ export async function addProduct(page: Page, slug: string) {
   await page.goto(`/product/${slug}`)
   await page.getByRole('button', { name: 'В корзину', exact: true }).click()
   await expect(page.getByRole('button', { name: 'Добавлено' })).toBeVisible()
+}
+
+/** Выбор значения в выпадающем списке (Headless UI Listbox): открыть и кликнуть опцию по названию */
+export async function pickOption(page: Page, label: string | RegExp, option: string) {
+  await page.getByLabel(label).first().click()
+  await page.getByRole('option', { name: option, exact: true }).click()
 }

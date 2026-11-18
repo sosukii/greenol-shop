@@ -107,7 +107,7 @@ test.describe('адаптивность (админка)', () => {
       await page.goto('/checkout')
       await page.getByLabel('Имя').fill('Анна')
       await page.getByLabel('Телефон').fill('9161112233')
-      await page.getByRole('textbox', { name: 'Город' }).fill('Москва')
+      await page.getByRole('combobox', { name: 'Город' }).fill('Москва')
       await page.getByLabel('Адрес или пункт выдачи').fill('ул. Тверская, 1')
       await page.getByLabel(/Согласен на обработку/).check()
       await page.getByRole('button', { name: 'Оплатить' }).click()

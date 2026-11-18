@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { addProduct, fillCheckout, watchErrors } from './helpers'
+import { addProduct, fillCheckout, pickOption, watchErrors } from './helpers'
 
 test.describe('витрина', () => {
   test('главная: один h1, навигация работает, ошибок консоли нет', async ({ page }) => {
@@ -44,7 +44,7 @@ test.describe('витрина', () => {
   test('фильтры и сортировка меняют выдачу и сохраняются в URL', async ({ page }) => {
     await page.goto('/catalog')
     const total = await page.locator('article').count()
-    await page.getByLabel('Сортировка').selectOption('price-asc')
+    await pickOption(page, 'Сортировка', 'Сначала дешевле')
     await expect(page).toHaveURL(/sort=price-asc/)
     const first = await page.locator('article').first().innerText()
     expect(first).toMatch(/200 ₽|от 200/)
@@ -125,7 +125,7 @@ test.describe('корзина и оформление', () => {
     await addProduct(page, 'raskoksovka-dvigatelya-reanimator')
     await page.goto('/checkout')
     await expect(page.getByText('укажите город').first()).toBeVisible()
-    await page.getByRole('textbox', { name: 'Город' }).fill('Казань')
+    await page.getByRole('combobox', { name: 'Город' }).fill('Казань')
     await expect(page.getByText('ориентировочно').first()).toBeVisible()
     const total1 = await page.locator('aside').getByText('Итого').locator('..').innerText()
     await page.getByRole('radio', { name: /Ozon/ }).check()
@@ -208,5 +208,39 @@ test.describe('корзина и оформление', () => {
     await page.getByRole('button', { name: 'Отправить заявку' }).click()
     await expect(page.getByText('Заявка отправлена')).toBeVisible()
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem('greenol:leads') ?? '[]').length)).toBe(1)
+  })
+})
+
+test.describe('выпадающие списки и подсказки городов', () => {
+  test('автокомплит города на странице доставки, выпадашка раскрывается под полем', async ({ page }) => {
+    await page.goto('/delivery')
+    const city = page.getByRole('combobox', { name: 'Город' })
+    await city.fill('санкт')
+    const option = page.getByRole('option', { name: 'Санкт-Петербург' })
+    await expect(option).toBeVisible()
+    const [c, o] = [await city.boundingBox(), await option.boundingBox()]
+    expect(o!.y).toBeGreaterThanOrEqual(c!.y + c!.height) // список под полем, а не поверх
+    await option.click()
+    await expect(city).toHaveValue('Санкт-Петербург')
+    await expect(page.getByText(/≈ 350 ₽/)).toBeVisible()
+  })
+  test('подсказки ищут по ё/е и середине названия, свободный ввод остаётся', async ({ page }) => {
+    await page.goto('/delivery')
+    const city = page.getByRole('combobox', { name: 'Город' })
+    await city.fill('орел')
+    await expect(page.getByRole('option', { name: 'Орёл' })).toBeVisible()
+    await city.fill('Деревня Васюки')
+    await expect(page.getByRole('option')).toHaveCount(0)
+    await expect(city).toHaveValue('Деревня Васюки')
+  })
+  test('выбор службы доставки: список под полем, клавиатура работает', async ({ page }) => {
+    await page.goto('/delivery')
+    const sel = page.getByLabel('Служба доставки')
+    await sel.focus()
+    await page.keyboard.press('Enter')
+    await expect(page.getByRole('option', { name: 'Ozon Доставка' })).toBeVisible()
+    await page.keyboard.press('ArrowDown')
+    await page.keyboard.press('Enter')
+    await expect(sel).toContainText('Ozon Доставка')
   })
 })
