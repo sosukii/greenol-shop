@@ -35,8 +35,7 @@ export function createHttpApi(base: string): Api {
       logout: () => post('/api/admin/logout'),
       isAuthed: async () => {
         try {
-          await req('/api/admin/me')
-          return true
+          return !!(await req<{ authenticated: boolean }>('/api/admin/me'))?.authenticated
         } catch {
           return false
         }

@@ -1,0 +1,28 @@
+# Render Blueprint: бэкенд Greenol. Платный план нужен ради постоянного диска (SQLite).
+services:
+  - type: web
+    name: greenol-api
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    disk:
+      name: greenol-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DATA_FILE
+        value: /data/shop.db
+      - key: ALLOWED_ORIGINS
+        value: https://sosukii.github.io
+      - key: CROSS_SITE_COOKIES
+        value: "true"
+      - key: PAYMENT_MODE
+        value: sandbox
+      - key: ADMIN_USER
+        value: admin
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: PAYMENT_WEBHOOK_SECRET
+        generateValue: true
+      - key: ADMIN_PASSWORD_HASH
+        sync: false   # вставляется вручную в панели Render (хэш, не пароль)

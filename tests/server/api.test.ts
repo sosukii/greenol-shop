@@ -91,7 +91,12 @@ describe('webhook оплаты', () => {
 
 describe('админка', () => {
   it('без авторизации — 401', async () => {
-    for (const p of ['/api/admin/orders', '/api/admin/leads', '/api/admin/me']) expect((await app.request(p)).status).toBe(401)
+    for (const p of ['/api/admin/orders', '/api/admin/leads']) expect((await app.request(p)).status).toBe(401)
+  })
+  it('/me: без входа 200 authenticated=false, после входа true', async () => {
+    expect(await (await app.request('/api/admin/me')).json()).toEqual({ authenticated: false })
+    const { cookie } = await login()
+    expect((await (await app.request('/api/admin/me', { headers: { Cookie: cookie } })).json()).authenticated).toBe(true)
   })
   it('неверный пароль — 401, верный — httpOnly cookie', async () => {
     expect((await login('wrong')).r.status).toBe(401)

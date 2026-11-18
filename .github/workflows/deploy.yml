@@ -24,6 +24,8 @@ jobs:
       - run: npm run build
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
+          # Адрес бэкенда из Settings → Variables → API_URL. Пусто — локальный режим
+          VITE_API_URL: ${{ vars.API_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

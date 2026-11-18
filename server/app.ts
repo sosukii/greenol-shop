@@ -18,6 +18,8 @@ export interface AppConfig {
   /** разрешённые Origin для CORS (адрес витрины) */
   allowedOrigins: string[]
   secureCookies?: boolean
+  /** витрина на другом домене (например GitHub Pages): cookie SameSite=None; Secure */
+  crossSiteCookies?: boolean
 }
 
 /** Простейший in-memory лимитер: key → таймстемпы. Для нескольких инстансов нужен общий стор (Redis). */
@@ -104,13 +106,19 @@ export function createApp(cfg: AppConfig) {
     const ok = user === cfg.adminUser && typeof password === 'string' && (await verifyPassword(password, cfg.adminHash))
     if (!ok) return c.json({ error: 'invalid-credentials' }, 401)
     setCookie(c, SESSION_COOKIE, await signToken(cfg.sessionSecret, { user, role: 'owner' }), {
-      httpOnly: true, sameSite: 'Lax', secure: cfg.secureCookies ?? true, path: '/', maxAge: 8 * 3600,
+      httpOnly: true, sameSite: cfg.crossSiteCookies ? 'None' : 'Lax', secure: cfg.crossSiteCookies ? true : (cfg.secureCookies ?? true), path: '/', maxAge: 8 * 3600,
     })
     return c.json({ ok: true })
   })
   app.post('/api/admin/logout', (c) => {
     deleteCookie(c, SESSION_COOKIE, { path: '/' })
     return c.body(null, 204)
+  })
+
+  // Проверка сессии: всегда 200, чтобы витрина могла спросить «вошёл ли я» без ошибок в консоли
+  app.get('/api/admin/me', async (c) => {
+    const s = await verifyToken(cfg.sessionSecret, getCookie(c, SESSION_COOKIE))
+    return c.json(s ? { authenticated: true, user: s.user, role: 'owner' } : { authenticated: false })
   })
 
   const admin = new Hono<{ Variables: { user: string } }>()
@@ -120,7 +128,6 @@ export function createApp(cfg: AppConfig) {
     c.set('user', String(s.user))
     await next()
   })
-  admin.get('/me', (c) => c.json({ user: c.get('user'), role: 'owner' }))
   admin.get('/orders', async (c) => c.json((await cfg.store.listOrders()).sort((a, b) => b.createdAt.localeCompare(a.createdAt))))
   admin.get('/orders/:id', async (c) => {
     const o = (await cfg.store.listOrders()).find((x) => x.id === c.req.param('id'))

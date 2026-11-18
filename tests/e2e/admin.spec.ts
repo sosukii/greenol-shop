@@ -86,7 +86,8 @@ test.describe('админка', () => {
     await page.getByRole('button', { name: 'Выйти' }).click()
     await page.goto('/admin/orders')
     await expect(page).toHaveURL(/\/admin\/login/)
-    expect(errors).toEqual([])
+    // 422 ожидаем: шаг «ручная оплата без причины» намеренно получает отказ валидации от API (HTTP-режим)
+    expect(errors.filter((e) => !e.includes('status of 422'))).toEqual([])
   })
 
   test('пустые состояния админки', async ({ page }) => {
