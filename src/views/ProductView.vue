@@ -127,8 +127,8 @@ const classes = {
         <button type="button" :class="classes.galleryMain" aria-label="Увеличить фото" @click="zoom = true">
           <ProductImage :id="product.images[imgIndex]" :alt="product.title" sizes="(min-width:768px) 50vw, 100vw" priority />
         </button>
-        <div v-if="product.images.length > 1" :class="classes.thumbs" role="list">
-          <button v-for="(id, i) in product.images" :key="id" type="button" role="listitem" :class="[classes.thumb, i === imgIndex && classes.thumbActive]" :aria-label="`Фото ${i + 1}`" @click="imgIndex = i">
+        <div v-if="product.images.length > 1" :class="classes.thumbs" role="group" aria-label="Фото товара">
+          <button v-for="(id, i) in product.images" :key="id" type="button" :class="[classes.thumb, i === imgIndex && classes.thumbActive]" :aria-label="`Фото ${i + 1}`" @click="imgIndex = i">
             <ProductImage :id="id" :alt="`${product.title}, фото ${i + 1}`" sizes="64px" />
           </button>
         </div>
@@ -149,7 +149,7 @@ const classes = {
           <p class="mb-2 text-sm font-medium">Фасовка</p>
           <div :class="classes.chips" role="group" aria-label="Фасовка">
             <button v-for="o in product.offers" :key="o.sku" type="button" :class="classes.chip" :aria-pressed="o.sku === offerSku" @click="offerSku = o.sku">
-              {{ o.label }}<span v-if="hasPrice(o)" class="ml-1.5 text-slate-500">{{ formatPrice(o.price) }}</span>
+              {{ o.label }}<span v-if="hasPrice(o)" class="ml-1.5 text-slate-700">{{ formatPrice(o.price) }}</span>
             </button>
           </div>
         </div>
@@ -176,7 +176,7 @@ const classes = {
         </section>
         <section :class="classes.box" aria-labelledby="p-delivery">
           <h2 id="p-delivery" :class="classes.h2">Доставка и оплата</h2>
-          <p class="text-sm text-slate-600">Доставка СДЭК и Ozon по России, стоимость рассчитывается при оформлении заказа. Оплата картой онлайн, наличными при получении или по счёту. <RouterLink to="/delivery" class="text-brand-600 hover:underline">Подробнее</RouterLink></p>
+          <p class="text-sm text-slate-600">Доставка СДЭК и Ozon по России, стоимость рассчитывается при оформлении заказа. Оплата картой онлайн, наличными при получении или по счёту. <RouterLink to="/delivery" class="text-brand-700 underline">Подробнее</RouterLink></p>
         </section>
       </div>
     </div>

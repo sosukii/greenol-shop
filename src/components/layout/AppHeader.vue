@@ -29,7 +29,7 @@ const classes = {
 <template>
   <div :class="classes.top">
     <div :class="classes.topInner">
-      <a :href="`tel:${site.contacts.phoneRaw}`" :class="classes.link">{{ site.contacts.phone }} <span class="text-slate-400">· {{ site.contacts.hours[0] }}</span></a>
+      <a :href="`tel:${site.contacts.phoneRaw}`" :class="classes.link">{{ site.contacts.phone }} <span class="text-slate-600">· {{ site.contacts.hours[0] }}</span></a>
       <nav :class="classes.topLinks" aria-label="Информация">
         <RouterLink to="/about" :class="classes.link">О магазине</RouterLink>
         <RouterLink to="/delivery" :class="classes.link">Доставка и оплата</RouterLink>
