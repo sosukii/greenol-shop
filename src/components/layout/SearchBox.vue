@@ -32,7 +32,7 @@ onBeforeUnmount(() => document.removeEventListener('click', outside))
 const classes = {
   root: 'relative min-w-0 flex-1',
   form: 'flex',
-  field: 'h-11 min-w-0 flex-1 rounded-l-xl border border-r-0 border-slate-300 bg-white px-3.5 text-base outline-none placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-100',
+  field: 'h-11 min-w-0 flex-1 rounded-l-xl border border-r-0 border-slate-300 bg-white px-3.5 text-base outline-none placeholder:text-slate-400 field-quiet',
   submit: 'inline-flex h-11 w-12 items-center justify-center rounded-r-xl bg-brand-600 text-white transition-colors hover:bg-brand-700',
   list: 'absolute left-0 right-0 top-full z-40 mt-1 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg',
   item: 'block truncate px-3.5 py-3 text-sm hover:bg-slate-50 focus:bg-slate-50',

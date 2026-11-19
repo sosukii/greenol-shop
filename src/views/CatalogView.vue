@@ -97,6 +97,7 @@ const classes = {
   block: 'flex flex-col gap-1.5',
   blockTitle: 'mb-1 text-sm font-semibold text-slate-900',
   catLink: 'rounded-lg px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-brand-600',
+  backLink: 'flex items-center gap-1 rounded-lg px-1.5 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-brand-600',
   toolbar: 'mb-4 flex flex-wrap items-end justify-between gap-3',
   mobileBtn: 'lg:hidden',
   sort: 'w-full max-w-60 sm:w-52',
@@ -116,7 +117,7 @@ const classes = {
           <div v-if="children.length || category" :class="classes.block">
             <p v-if="children.length" :class="classes.blockTitle">Подкатегории</p>
             <RouterLink v-for="c in children" :key="c.id" :to="`/catalog/${c.slug}`" :class="classes.catLink">{{ c.title }}</RouterLink>
-            <RouterLink v-if="category" :to="category.parentId ? `/catalog/${categoryPath(category.id).at(-2)?.slug}` : '/catalog'" :class="classes.catLink">← {{ category.parentId ? 'Назад' : 'Все категории' }}</RouterLink>
+            <RouterLink v-if="category" :to="category.parentId ? `/catalog/${categoryPath(category.id).at(-2)?.slug}` : '/catalog'" :class="classes.backLink"><UiIcon name="chevronLeft" :size="18" class="text-slate-400" />{{ category.parentId ? 'Назад' : 'Все категории' }}</RouterLink>
           </div>
           <div :class="classes.block">
             <p :class="classes.blockTitle">Наличие</p>
@@ -129,8 +130,8 @@ const classes = {
           <form :class="classes.block" @submit.prevent="applyPrice">
             <p :class="classes.blockTitle">Цена, ₽</p>
             <div :class="classes.priceRow">
-              <UiInput v-model="minModel" label="От" inputmode="numeric" placeholder="0" />
-              <UiInput v-model="maxModel" label="До" inputmode="numeric" placeholder="∞" />
+              <UiInput v-model="minModel" label="От" inputmode="numeric" placeholder="0" quiet />
+              <UiInput v-model="maxModel" label="До" inputmode="numeric" placeholder="∞" quiet />
             </div>
             <UiButton type="submit" variant="secondary" size="sm">Применить</UiButton>
           </form>

@@ -9,6 +9,8 @@ const props = defineProps<{
   hint?: string
   autocomplete?: string
   inputmode?: 'text' | 'tel' | 'email' | 'numeric'
+  /** без цветной обводки при фокусе */
+  quiet?: boolean
 }>()
 const model = defineModel<string>({ default: '' })
 const id = useId()
@@ -18,7 +20,8 @@ const classes = {
   label: 'text-sm font-medium text-slate-700',
   input: computed(() => [
     'h-11 w-full rounded-xl border bg-white px-3.5 text-base outline-none transition-colors',
-    'placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 disabled:bg-slate-100',
+    'placeholder:text-slate-400 disabled:bg-slate-100',
+    props.quiet ? 'field-quiet' : 'focus:border-brand-500 focus:ring-2 focus:ring-brand-100',
     props.error ? 'border-red-500' : 'border-slate-300',
   ]),
   error: 'text-sm text-red-600',
