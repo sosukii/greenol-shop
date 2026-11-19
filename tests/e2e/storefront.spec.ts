@@ -265,3 +265,34 @@ test.describe('пагинация и карточки', () => {
     expect((await card.boundingBox())!.y).toBe(y)
   })
 })
+
+test.describe('доставка на товаре и в корзине', () => {
+  test('товар: блок «Доставка и возврат» — наличие, город с подсказками, цены СДЭК и Ozon; бейджей нет', async ({ page }) => {
+    await page.goto('/product/raskoksovka-dvigatelya-reanimator')
+    await expect(page.getByText('Новинка')).toHaveCount(0)
+    await expect(page.getByText('Хит продаж')).toHaveCount(0)
+    const box = page.locator('section', { has: page.getByRole('heading', { name: 'Доставка и возврат' }) })
+    await expect(box.getByText('В наличии')).toBeVisible()
+    await expect(box.getByText('Укажите город')).toBeVisible()
+    await box.getByRole('combobox', { name: 'Город доставки' }).fill('каз')
+    await page.getByRole('option', { name: 'Казань' }).click()
+    await expect(box.getByText('СДЭК')).toBeVisible()
+    await expect(box.getByText('≈ 350 ₽')).toBeVisible()
+    await expect(box.getByText('Ozon Доставка')).toBeVisible()
+    await expect(box.getByText('≈ 300 ₽')).toBeVisible()
+  })
+  test('корзина: город общий с карточкой товара, смена города и количества пересчитывает доставку', async ({ page }) => {
+    await page.goto('/product/raskoksovka-dvigatelya-reanimator')
+    await page.getByRole('combobox', { name: 'Город доставки' }).fill('Казань')
+    await page.getByRole('button', { name: 'В корзину', exact: true }).click()
+    await page.goto('/cart')
+    const city = page.getByRole('combobox', { name: 'Город доставки' })
+    await expect(city).toHaveValue('Казань') // подставился автоматически
+    await expect(page.getByText('≈ 350 ₽')).toBeVisible()
+    await page.getByRole('button', { name: 'Увеличить' }).click() // 2 шт: 350 + 40
+    await expect(page.getByText('≈ 390 ₽')).toBeVisible()
+    await city.fill('Самара')
+    await expect(page.getByText('≈ 390 ₽')).toBeVisible()
+    await expect(page.getByText(/Арт\./)).toHaveCount(0) // артикул в корзине убран
+  })
+})
