@@ -33,7 +33,7 @@ const classes = {
   h2: 'text-xl font-bold sm:text-2xl',
   more: 'inline-flex min-h-8 items-center text-sm font-medium text-brand-600 hover:underline',
   cats: 'grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4',
-  cat: 'flex min-h-28 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-brand-500',
+  cat: 'flex min-h-28 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 transition-colors duration-150 hover:border-brand-500',
   catTitle: 'font-semibold leading-5',
   catCount: 'text-sm text-slate-500',
   brands: 'grid gap-3 sm:grid-cols-2',
