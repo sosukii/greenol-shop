@@ -13,6 +13,8 @@ const paths = {
   pin: 'M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
   check: 'M5 13l4 4L19 7',
   chevron: 'M9 6l6 6-6 6',
+  plus: 'M12 5.5v13M5.5 12h13',
+  minus: 'M5.5 12h13',
   chevronLeft: 'M15 6l-6 6 6 6',
   chevronDown: 'M6 9l6 6 6-6',
   filter: 'M4 5h16M7 12h10M10 19h4',
