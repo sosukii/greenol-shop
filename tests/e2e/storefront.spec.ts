@@ -296,3 +296,27 @@ test.describe('доставка на товаре и в корзине', () => {
     await expect(page.getByText(/Арт\./)).toHaveCount(0) // артикул в корзине убран
   })
 })
+
+test.describe('запоминание города и мягкий фокус', () => {
+  test('последние города предлагаются в списке на пустом поле и подставляются после перезагрузки', async ({ page }) => {
+    await page.goto('/delivery')
+    const city = page.getByRole('combobox', { name: 'Город' })
+    for (const [typed, option] of [['каз', 'Казань'], ['тул', 'Тула']]) {
+      await city.fill(typed)
+      await page.getByRole('option', { name: option, exact: true }).click()
+    }
+    await page.reload()
+    await expect(city).toHaveValue('Тула') // последний указанный подставлен
+    await city.fill('')
+    await expect(page.getByRole('option').first()).toHaveText('Тула') // недавние идут первыми
+    await expect(page.getByRole('option').nth(1)).toHaveText('Казань')
+  })
+  test('поле при фокусе без яркой обводки и без цветной тени', async ({ page }) => {
+    await page.goto('/delivery')
+    const city = page.getByRole('combobox', { name: 'Город' })
+    await city.focus()
+    const [outline, shadow] = await city.evaluate((e) => [getComputedStyle(e).outlineStyle, getComputedStyle(e).boxShadow])
+    expect(outline).toBe('none')
+    expect(shadow).toBe('none')
+  })
+})

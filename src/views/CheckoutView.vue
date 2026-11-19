@@ -35,6 +35,7 @@ onMounted(() => {
   if (cart.items.length) track('begin_checkout', { items: cart.count })
 })
 watch(() => form.city, (v) => { place.city = v })
+watch(() => place.city, (v) => { if (!form.city) form.city = v }) // город определился по IP уже после открытия страницы
 watch(() => form.provider, (p) => track('select_delivery', { provider: p }))
 
 const estimates = computed(() =>
@@ -128,7 +129,7 @@ const classes = {
       <section :class="classes.card" aria-labelledby="c-delivery">
         <h2 id="c-delivery" :class="classes.h2">Доставка</h2>
         <div :class="classes.grid2">
-          <UiCityInput v-model="form.city" label="Город" placeholder="Например, Казань" :error="errors.city" @focusout="check('city')" />
+          <UiCityInput v-model="form.city" label="Город" placeholder="Например, Казань" :recent="place.recent" @commit="place.remember" :error="errors.city" @focusout="check('city')" />
           <UiInput v-model="form.address" label="Адрес или пункт выдачи" autocomplete="street-address" :error="errors.address" @focusout="check('address')" />
         </div>
         <fieldset class="flex flex-col gap-2">

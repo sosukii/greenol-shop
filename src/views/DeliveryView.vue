@@ -19,6 +19,7 @@ const calc = reactive({ city: '', provider: 'cdek', units: '1' })
 const place = useDeliveryStore()
 onMounted(() => { place.hydrate(); if (!calc.city) calc.city = place.city })
 watch(() => calc.city, (v) => { place.city = v })
+watch(() => place.city, (v) => { if (!calc.city) calc.city = v })
 const result = computed(() => {
   const n = Math.min(99, Math.max(1, Number(calc.units) || 1))
   try { return calc.city.trim() ? estimateDelivery(calc.provider, calc.city, n) : null } catch { return null }
@@ -37,7 +38,7 @@ const classes = { card: 'rounded-2xl border border-slate-200 bg-white p-5', h2: 
     <section :class="classes.card" aria-labelledby="d-calc">
       <h2 id="d-calc" :class="classes.h2">Калькулятор доставки</h2>
       <form :class="classes.grid" @submit.prevent>
-        <UiCityInput v-model="calc.city" label="Город" placeholder="Например, Казань" />
+        <UiCityInput v-model="calc.city" label="Город" placeholder="Например, Казань" :recent="place.recent" @commit="place.remember" />
         <UiSelect v-model="calc.provider" label="Служба доставки" :options="deliveryProviders.map((p) => ({ value: p.id, label: p.title }))" />
         <UiInput v-model="calc.units" label="Количество товаров" inputmode="numeric" />
       </form>

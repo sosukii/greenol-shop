@@ -30,7 +30,7 @@ const classes = {
 
 <template>
   <div>
-    <UiCityInput v-model="place.city" :label="label ?? 'Город доставки'" placeholder="Например, Казань" />
+    <UiCityInput v-model="place.city" :label="label ?? 'Город доставки'" placeholder="Например, Казань" :recent="place.recent" @commit="place.remember" />
     <ul v-if="rows.length" :class="classes.list" aria-live="polite">
       <li v-for="r in rows" :key="r.provider" :class="classes.row">
         <div>
@@ -40,6 +40,7 @@ const classes = {
         <span :class="classes.price">≈ {{ formatPrice(r.price) }}</span>
       </li>
     </ul>
+    <p v-if="place.isAuto" :class="classes.hint">Определили город по вашему местоположению. Если не угадали, просто измените.</p>
     <p v-if="rows.length" :class="classes.hint">Расчёт ориентировочный: точную стоимость и срок подтвердит менеджер после оформления.</p>
     <p v-else :class="classes.hint">Укажите город — покажем стоимость и сроки СДЭК и Ozon Доставки.</p>
   </div>
