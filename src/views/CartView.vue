@@ -23,13 +23,13 @@ const classes = {
   title: 'mb-5 text-2xl font-bold sm:text-3xl',
   layout: 'grid gap-6 lg:grid-cols-[1fr_22rem]',
   list: 'flex flex-col gap-3',
-  row: 'grid grid-cols-[4.5rem_1fr] gap-x-4 gap-y-3 rounded-2xl border border-slate-200 bg-white p-3 sm:grid-cols-[5.5rem_1fr_auto_auto] sm:p-4',
+  row: 'grid grid-cols-[4.5rem_1fr] gap-x-4 gap-y-3 rounded-2xl border border-slate-200 bg-white p-3 sm:grid-cols-[5.5rem_1fr_auto] sm:p-4',
   info: 'flex min-w-0 flex-col justify-between gap-2',
   name: 'font-medium leading-5 hover:text-brand-600',
   sub: 'mt-1 text-sm text-slate-500',
-  controls: 'col-span-2 flex items-center justify-between gap-3 sm:col-span-1 sm:justify-start sm:self-center',
-  sum: 'text-lg font-bold sm:w-28 sm:text-right',
-  sumBox: 'hidden self-center sm:block',
+  // справа количество: главный элемент строки; сумма приглушена
+  right: 'col-span-2 flex items-center justify-between gap-3 sm:col-span-1 sm:flex-col sm:items-end sm:justify-center sm:self-center',
+  sum: 'text-sm tabular-nums text-slate-500',
   remove: 'inline-flex size-8 items-center justify-center self-start rounded-xl text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600',
   summary: 'flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-5 lg:sticky lg:top-24 lg:self-start',
   line: 'flex justify-between gap-4',
@@ -48,7 +48,7 @@ const classes = {
   <div v-else :class="classes.layout">
     <ul :class="classes.list">
       <li v-for="item in cart.items" :key="item.sku" :class="classes.row">
-        <RouterLink :to="`/product/${item.slug}`" tabindex="-1" aria-hidden="true"><ProductImage :id="item.image" :alt="item.title" sizes="96px" /></RouterLink>
+        <RouterLink :to="`/product/${item.slug}`" tabindex="-1" aria-hidden="true" class="self-start"><ProductImage :id="item.image" :alt="item.title" sizes="96px" /></RouterLink>
         <div :class="classes.info">
           <div>
             <RouterLink :to="`/product/${item.slug}`" :class="classes.name">{{ item.title }}</RouterLink>
@@ -56,11 +56,10 @@ const classes = {
           </div>
           <button type="button" :class="classes.remove" :aria-label="`Удалить: ${item.title}`" @click="remove(item.sku)"><UiIcon name="trash" :size="16" /></button>
         </div>
-        <div :class="classes.controls">
+        <div :class="classes.right">
           <UiQuantity :model-value="item.qty" @update:model-value="cart.setQty(item.sku, $event)" />
-          <span :class="[classes.sum, 'sm:hidden']">{{ formatPrice(item.price * item.qty) }}</span>
+          <span :class="classes.sum">{{ formatPrice(item.price * item.qty) }}</span>
         </div>
-        <div :class="classes.sumBox"><span :class="classes.sum">{{ formatPrice(item.price * item.qty) }}</span></div>
       </li>
     </ul>
     <aside :class="classes.summary" aria-label="Итого">
