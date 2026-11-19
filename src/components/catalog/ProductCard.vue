@@ -32,7 +32,6 @@ onBeforeUnmount(() => clearTimeout(timer))
 
 const classes = {
   root: 'group relative flex h-full flex-col gap-2.5 rounded-2xl border border-slate-200 bg-white p-3 transition-colors duration-150 hover:border-slate-300',
-  badges: 'absolute left-4 top-4 z-10 flex flex-col items-start gap-1',
   title: 'line-clamp-3 min-h-[3.75rem] text-sm font-medium leading-5 text-slate-900 after:absolute after:inset-0 hover:text-brand-600 sm:text-base sm:leading-5',
   brand: 'text-xs text-slate-500',
   meta: 'flex items-center gap-1.5 text-xs',
@@ -45,10 +44,6 @@ const classes = {
 
 <template>
   <article :class="classes.root">
-    <div :class="classes.badges">
-      <UiBadge v-if="product.isNew" tone="brand">Новинка</UiBadge>
-      <UiBadge v-if="product.hit" tone="warning">Хит</UiBadge>
-    </div>
     <ProductImage :id="product.images[0]" :alt="product.title" :priority="priority" />
     <p :class="classes.brand">{{ getBrand(product.brand)?.title }}</p>
     <h3>
