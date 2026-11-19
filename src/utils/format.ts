@@ -13,3 +13,13 @@ export const plural = (n: number, one: string, few: string, many: string) => {
   if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few
   return many
 }
+
+const dayMonth = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' })
+const addDays = (n: number) => { const d = new Date(); d.setDate(d.getDate() + n); return d }
+
+/** «21–25 ноября» или «28 ноября – 2 декабря» — календарные сроки по числу дней в пути */
+export function deliveryDates(daysMin: number, daysMax: number) {
+  const a = addDays(daysMin), b = addDays(daysMax)
+  if (a.getMonth() === b.getMonth()) return `${a.getDate()}–${dayMonth.format(b)}`
+  return `${dayMonth.format(a)} – ${dayMonth.format(b)}`
+}

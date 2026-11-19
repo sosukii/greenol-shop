@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, onMounted, reactive, watch } from 'vue'
 import { deliveryProviders, paymentMethods, site } from '@/config/site'
 import { estimateDelivery } from '@/core/delivery'
 import { formatPrice } from '@/utils/format'
+import { useDeliveryStore } from '@/stores/delivery'
 import { breadcrumbLd, useSeo } from '@/composables/useSeo'
 import PageShell from '@/components/layout/PageShell.vue'
 import { UiAlert, UiButton, UiCityInput, UiInput, UiSelect } from '@/components/ui'
@@ -15,6 +16,9 @@ useSeo({
 })
 
 const calc = reactive({ city: '', provider: 'cdek', units: '1' })
+const place = useDeliveryStore()
+onMounted(() => { place.hydrate(); if (!calc.city) calc.city = place.city })
+watch(() => calc.city, (v) => { place.city = v })
 const result = computed(() => {
   const n = Math.min(99, Math.max(1, Number(calc.units) || 1))
   try { return calc.city.trim() ? estimateDelivery(calc.provider, calc.city, n) : null } catch { return null }

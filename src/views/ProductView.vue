@@ -11,7 +11,8 @@ import { ecommerce, track } from '@/composables/analytics'
 import { toast } from '@/composables/useToast'
 import ProductImage from '@/components/catalog/ProductImage.vue'
 import ProductGrid from '@/components/catalog/ProductGrid.vue'
-import { UiBadge, UiBreadcrumbs, UiButton, UiIcon, UiModal, UiQuantity } from '@/components/ui'
+import { UiBreadcrumbs, UiButton, UiIcon, UiModal, UiQuantity } from '@/components/ui'
+import DeliveryEstimate from '@/components/delivery/DeliveryEstimate.vue'
 import NotFoundView from './NotFoundView.vue'
 
 const route = useRoute()
@@ -101,7 +102,9 @@ const classes = {
   thumbs: 'mt-3 flex gap-2 overflow-x-auto pb-1',
   thumb: 'size-16 shrink-0 overflow-hidden rounded-lg border-2 border-transparent bg-white',
   thumbActive: '!border-brand-600',
-  badges: 'mb-2 flex flex-wrap gap-1.5',
+  availRow: 'flex items-center gap-2.5 border-b border-slate-100 pb-3 text-sm',
+  availIcon: 'shrink-0',
+  payRow: 'mt-3 border-t border-slate-100 pt-3 text-sm text-slate-600',
   title: 'mb-2 text-2xl font-bold leading-tight sm:text-3xl',
   meta: 'mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500',
   chips: 'flex flex-wrap gap-2',
@@ -135,14 +138,9 @@ const classes = {
       </div>
 
       <div>
-        <div :class="classes.badges">
-          <UiBadge v-if="product.isNew" tone="brand">Новинка</UiBadge>
-          <UiBadge v-if="product.hit" tone="warning">Хит продаж</UiBadge>
-        </div>
         <h1 :class="classes.title">{{ product.title }}</h1>
         <p :class="classes.meta">
           <span>{{ brand }}</span><span>Артикул: {{ offer?.sku }}</span>
-          <UiBadge v-if="offer" :tone="offer.inStock ? 'success' : 'neutral'">{{ availabilityLabel(offer) }}</UiBadge>
         </p>
 
         <div v-if="product.offers.length > 1" class="mb-4">
@@ -170,13 +168,18 @@ const classes = {
           <UiButton :to="`/contacts?sku=${offer?.sku}#callback`">Запросить цену</UiButton>
         </div>
 
+        <section :class="classes.box" aria-labelledby="p-delivery">
+          <h2 id="p-delivery" :class="classes.h2">Доставка и возврат</h2>
+          <p v-if="offer" :class="classes.availRow">
+            <UiIcon :name="offer.inStock ? 'check' : 'truck'" :size="18" :class="[classes.availIcon, offer.inStock ? 'text-emerald-600' : 'text-slate-500']" />
+            <span><span class="font-medium">{{ availabilityLabel(offer) }}</span><span v-if="!offer.inStock" class="text-slate-500"> — срок поставки уточнит менеджер</span></span>
+          </p>
+          <DeliveryEstimate :count="qty" class="mt-3" />
+          <p :class="classes.payRow">Оплата картой онлайн, наличными при получении или по счёту. Условия возврата уточняйте у менеджера. <RouterLink to="/delivery" class="text-brand-700 underline">Подробнее</RouterLink></p>
+        </section>
         <section :class="classes.box" aria-labelledby="p-specs">
           <h2 id="p-specs" :class="classes.h2">Характеристики</h2>
           <dl :class="classes.dl"><template v-for="[k, v] in specs" :key="k"><dt :class="classes.dt">{{ k }}</dt><dd>{{ v }}</dd></template></dl>
-        </section>
-        <section :class="classes.box" aria-labelledby="p-delivery">
-          <h2 id="p-delivery" :class="classes.h2">Доставка и оплата</h2>
-          <p class="text-sm text-slate-600">Доставка СДЭК и Ozon по России, стоимость рассчитывается при оформлении заказа. Оплата картой онлайн, наличными при получении или по счёту. <RouterLink to="/delivery" class="text-brand-700 underline">Подробнее</RouterLink></p>
         </section>
       </div>
     </div>

@@ -7,6 +7,7 @@ import { ValidationError, type PaymentMethod } from '@/core/types'
 import { validateEmail, validatePhone, validateRequired } from '@/core/validation'
 import { deliveryProviders, paymentMethods } from '@/config/site'
 import { useCartStore } from '@/stores/cart'
+import { useDeliveryStore } from '@/stores/delivery'
 import { formatPrice, plural } from '@/utils/format'
 import { useSeo } from '@/composables/useSeo'
 import { track } from '@/composables/analytics'
@@ -18,11 +19,14 @@ const cart = useCartStore()
 const router = useRouter()
 const form = reactive({ name: '', phone: '', email: '', comment: '', city: '', address: '', provider: 'cdek', payment: 'card' as PaymentMethod, consent: false })
 const errors = reactive<Record<string, string>>({})
+const place = useDeliveryStore()
 const submitting = ref(false)
 const apiError = ref('')
 const key = ref('')
 
 onMounted(() => {
+  place.hydrate()
+  if (!form.city) form.city = place.city
   // Ключ идемпотентности живёт, пока заказ не создан: двойной клик или обновление страницы не создадут дубль
   try {
     key.value = sessionStorage.getItem('greenol:order-key') || crypto.randomUUID()
@@ -30,6 +34,7 @@ onMounted(() => {
   } catch { key.value = crypto.randomUUID() }
   if (cart.items.length) track('begin_checkout', { items: cart.count })
 })
+watch(() => form.city, (v) => { place.city = v })
 watch(() => form.provider, (p) => track('select_delivery', { provider: p }))
 
 const estimates = computed(() =>
