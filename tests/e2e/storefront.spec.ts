@@ -258,6 +258,7 @@ test.describe('пагинация и карточки', () => {
     await next.hover({ force: true })
     expect(await next.evaluate((e) => getComputedStyle(e).borderColor)).toBe(before)
     const card = page.locator('article').first()
+    await card.scrollIntoViewIfNeeded()
     const y = (await card.boundingBox())!.y
     await card.hover()
     await page.waitForTimeout(300)
