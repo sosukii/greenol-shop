@@ -21,7 +21,7 @@ const classes = {
   input: computed(() => [
     'h-11 w-full rounded-xl border bg-white px-3.5 text-base outline-none transition-colors',
     'placeholder:text-slate-400 disabled:bg-slate-100',
-    props.quiet ? 'field-quiet' : 'focus:border-brand-500 focus:ring-2 focus:ring-brand-100',
+    'field-quiet',
     props.error ? 'border-red-500' : 'border-slate-300',
   ]),
   error: 'text-sm text-red-600',

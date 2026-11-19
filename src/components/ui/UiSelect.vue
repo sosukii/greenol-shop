@@ -16,7 +16,7 @@ const classes = {
   root: 'relative flex flex-col gap-1.5',
   label: 'text-sm font-medium text-slate-700',
   button:
-    'flex h-11 w-full items-center justify-between gap-2 rounded-xl border border-slate-300 bg-white pl-3.5 pr-3 text-left text-base outline-none transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-100 data-[headlessui-state~=open]:border-brand-500',
+    'flex h-11 w-full items-center justify-between gap-2 rounded-xl border border-slate-300 bg-white pl-3.5 pr-3 text-left text-base field-quiet transition-colors data-[headlessui-state~=open]:border-slate-400',
   value: 'truncate',
   chevron: 'shrink-0 text-slate-500',
   list: 'scroll-mb-24 absolute left-0 right-0 top-full z-30 mt-1 max-h-64 overflow-auto rounded-xl border border-slate-200 bg-white py-1 shadow-lg outline-none',

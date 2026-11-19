@@ -27,12 +27,14 @@
 
 html { scroll-behavior: smooth; }
 body { @apply bg-slate-50 text-slate-900 antialiased; }
-:focus-visible { outline: 2px solid var(--color-brand-500); outline-offset: 2px; }
+/* Фокус с клавиатуры у кнопок и ссылок: заметный, но не кричащий */
+:focus-visible { outline: 2px solid color-mix(in srgb, var(--color-brand-500) 40%, transparent); outline-offset: 2px; }
 
 /* Поля без рамки-обводки при фокусе (поиск, цена): фокус виден только по лёгкому затемнению границы */
 /* Курсор-рука у всех кликабельных элементов (Tailwind 4 по умолчанию сбрасывает его у кнопок) */
 button:not(:disabled), [role='button']:not([aria-disabled='true']), summary, label[for], select { cursor: pointer; }
 
+.field-quiet[aria-invalid='true']:focus { border-color: var(--color-red-500); }
 .field-quiet:focus, .field-quiet:focus-visible { outline: none; box-shadow: none; border-color: var(--color-slate-400); }
 
 /* Чекбокс: скруглённый, галочка рисуется фоном */
