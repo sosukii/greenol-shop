@@ -137,3 +137,16 @@ describe('админка', () => {
     expect(r.status).toBe(422)
   })
 })
+
+describe('город по IP (/api/geo)', () => {
+  const geo = (cf?: { city?: string; country?: string }) => app.fetch(Object.assign(new Request('http://x/api/geo'), { cf }))
+  it('российский город из данных Cloudflare сопоставляется со справочником', async () => {
+    expect(await (await geo({ city: 'Kazan', country: 'RU' })).json()).toEqual({ city: 'Казань' })
+    expect(await (await geo({ city: 'Saint Petersburg', country: 'RU' })).json()).toEqual({ city: 'Санкт-Петербург' })
+  })
+  it('не Россия, неизвестный город или нет данных — null', async () => {
+    expect(await (await geo({ city: 'Berlin', country: 'DE' })).json()).toEqual({ city: null })
+    expect(await (await geo({ city: 'Neverland', country: 'RU' })).json()).toEqual({ city: null })
+    expect(await (await geo()).json()).toEqual({ city: null })
+  })
+})

@@ -34,6 +34,7 @@ const find = async (id: string) => (await store.listOrders()).find((o) => o.id =
 
 export const localApi: Api = {
   mode: 'local',
+  geoCity: async () => null, // без сервера город определить нечем
   createOrder: async (i) => pub(await createOrder(store, i)),
   getOrder: async (id) => {
     const o = await find(id)

@@ -4,6 +4,8 @@ import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
 import { hmacHex, signToken, verifyPassword, verifyToken } from '../src/core/auth'
 import { applyPaymentEvent, createLead, createOrder, markPaidManually, retryPayment, setLeadStatus, setOrderStatus, type Store } from '../src/core/orders'
 import { ValidationError, type Order } from '../src/core/types'
+import { matchCity } from '../src/core/geo'
+import { cities } from '../src/data/cities'
 
 export interface AppConfig {
   store: Store
@@ -64,6 +66,13 @@ export function createApp(cfg: AppConfig) {
   })
 
   app.get('/api/health', (c) => c.json({ ok: true }))
+
+  // Город посетителя по IP: берём данные самого Cloudflare (request.cf), IP никуда не передаётся и не сохраняется.
+  // Возвращаем только название города из нашего справочника (или null).
+  app.get('/api/geo', (c) => {
+    const cf = (c.req.raw as unknown as { cf?: { city?: string; country?: string } }).cf
+    return c.json({ city: cf?.country === 'RU' ? matchCity(cf.city, cities) : null })
+  })
 
   // ---- Публичные ----
   app.post('/api/orders', async (c) => {

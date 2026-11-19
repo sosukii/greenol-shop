@@ -11,6 +11,8 @@ export interface Api {
   simulatePayment(id: string, outcome: PaymentOutcome): Promise<PublicOrder>
   retryPayment(id: string): Promise<PublicOrder>
   createLead(input: CreateLeadInput): Promise<void>
+  /** Город посетителя (по IP на стороне сервера) для подстановки в расчёт доставки; null — не определён */
+  geoCity(): Promise<string | null>
   admin: {
     login(user: string, password: string): Promise<boolean>
     logout(): Promise<void>

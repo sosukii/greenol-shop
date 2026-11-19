@@ -23,6 +23,9 @@ export function createHttpApi(base: string): Api {
     simulatePayment: (id, outcome) => post(`/api/payments/sandbox/${id}/${outcome}`),
     retryPayment: (id) => post(`/api/orders/${id}/retry-payment`),
     createLead: (i) => post('/api/leads', i),
+    geoCity: async () => {
+      try { return (await req<{ city: string | null }>('/api/geo'))?.city ?? null } catch { return null }
+    },
     admin: {
       login: async (user, password) => {
         try {
