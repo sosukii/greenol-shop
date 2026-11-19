@@ -30,6 +30,9 @@ body { @apply bg-slate-50 text-slate-900 antialiased; }
 :focus-visible { outline: 2px solid var(--color-brand-500); outline-offset: 2px; }
 
 /* Поля без рамки-обводки при фокусе (поиск, цена): фокус виден только по лёгкому затемнению границы */
+/* Курсор-рука у всех кликабельных элементов (Tailwind 4 по умолчанию сбрасывает его у кнопок) */
+button:not(:disabled), [role='button']:not([aria-disabled='true']), summary, label[for], select { cursor: pointer; }
+
 .field-quiet:focus, .field-quiet:focus-visible { outline: none; box-shadow: none; border-color: var(--color-slate-400); }
 
 /* Чекбокс: скруглённый, галочка рисуется фоном */
