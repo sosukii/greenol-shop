@@ -27,7 +27,16 @@
 
 html { scroll-behavior: smooth; }
 body { @apply bg-slate-50 text-slate-900 antialiased; }
-:focus-visible { outline: 2px solid var(--color-brand-500); outline-offset: 2px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--color-brand-500); outline-offset: 2px; }
+
+/* Поля без рамки-обводки при фокусе (поиск, цена): фокус виден только по лёгкому затемнению границы */
+.field-quiet:focus, .field-quiet:focus-visible { outline: none; box-shadow: none; border-color: var(--color-slate-400); }
+
+/* Чекбокс: скруглённый, галочка рисуется фоном */
+.ui-check:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 10.5l3 3 6-6.5'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+}
 
 /* Переход между страницами: короткий и не блокирует действия */
 .page-enter-active { transition: opacity 0.18s ease, transform 0.18s ease; }
