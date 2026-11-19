@@ -34,7 +34,7 @@ onBeforeUnmount(() => document.removeEventListener('click', outside))
 const classes = {
   root: 'relative',
   btn: 'inline-flex h-11 items-center gap-2 rounded-xl bg-brand-600 px-4 font-semibold text-white transition-colors hover:bg-brand-700',
-  panel: 'absolute left-0 top-full z-40 mt-2 grid w-[min(56rem,calc(100vw-2rem))] grid-cols-[17rem_1fr] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl',
+  panel: 'absolute left-0 top-full z-40 mt-2 grid w-[min(56rem,calc(100vw-15rem))] grid-cols-[15rem_1fr] lg:grid-cols-[17rem_1fr] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl',
   rail: 'flex flex-col gap-0.5 border-r border-slate-100 bg-slate-50 p-3',
   railItem: (on: boolean) => [
     'flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-[15px]',
@@ -46,7 +46,7 @@ const classes = {
   titleRow: 'mb-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1',
   title: 'text-2xl font-bold text-slate-900 hover:text-brand-600',
   more: 'text-sm font-medium text-brand-600 hover:text-brand-700',
-  cols: 'grid grid-cols-2 gap-x-8 gap-y-6',
+  cols: 'grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-2',
   colHead: 'block py-1 font-semibold text-slate-900 hover:text-brand-600',
   colItem: 'block py-1 text-sm text-slate-600 hover:text-brand-600',
   label: 'mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400',
