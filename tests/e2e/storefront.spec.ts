@@ -244,3 +244,23 @@ test.describe('выпадающие списки и подсказки горо�
     await expect(sel).toContainText('Ozon Доставка')
   })
 })
+
+test.describe('пагинация и карточки', () => {
+  test('номер текущей страницы виден, у неактивной стрелки нет hover, карточка не поднимается', async ({ page }) => {
+    await page.goto('/catalog?page=4')
+    const cur = page.locator('nav[aria-label="Страницы"] [aria-current="page"]')
+    // белый текст на синем фоне, а не белый на белом
+    const [color, bg] = await cur.evaluate((e) => [getComputedStyle(e).color, getComputedStyle(e).backgroundColor])
+    expect(color).not.toBe(bg)
+    const next = page.getByRole('button', { name: 'Следующая страница' })
+    await expect(next).toBeDisabled()
+    const before = await next.evaluate((e) => getComputedStyle(e).borderColor)
+    await next.hover({ force: true })
+    expect(await next.evaluate((e) => getComputedStyle(e).borderColor)).toBe(before)
+    const card = page.locator('article').first()
+    const y = (await card.boundingBox())!.y
+    await card.hover()
+    await page.waitForTimeout(300)
+    expect((await card.boundingBox())!.y).toBe(y)
+  })
+})
